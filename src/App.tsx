@@ -1,6 +1,7 @@
 
 import './App.css';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -8,18 +9,20 @@ import Login from './pages/login/Login';
 import Cadastro from './pages/cadastro/Cadastro';
 import Home from './pages/home/Home';
 import { AuthProvider } from './contexts/AuthContext';
-import ListaProdutos from './components/Produto/listaProdutos/ListaProdutos';
+import ListaProdutos from './components/produto/listaProduto/ListaProduto';
 import ListaCategorias from './components/Categoria/listaCategoria/ListaCategoria';
 import FormularioCategoria from './components/Categoria/formularioCategoria/FormularioCategoria';
 import DeletarCategoria from './components/Categoria/deletarCategoria/DeletarCategoria';
-import FormularioProduto from './components/Produto/formularioProduto/FormularioProduto';
-
+import FormularioProduto from './components/produto/formularioProduto/FormularioProduto';
+import DeletarProduto from './components/produto/deletarProduto/DeletarProduto';
 
 
 function App() {
   return (
     <>
+
     <AuthProvider>
+    <ToastContainer />
         <BrowserRouter>
           <Navbar />
           <div className='min-h-[80vh]'>
@@ -35,6 +38,7 @@ function App() {
               <Route path="/produtos" element={<ListaProdutos />} />
               <Route path="/cadastroProdutos" element={<FormularioProduto />} />
               <Route path="/editarProduto/:id" element={<FormularioProduto/>} />
+              <Route path="/deletarProduto/:id" element={<DeletarProduto />} />
               <Route path="/listacategoria" element={<ListaCategorias/>} />
             </Routes>
           </div>

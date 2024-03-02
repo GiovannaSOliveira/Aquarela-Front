@@ -1,8 +1,7 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import Produto from '../../../model/Produto'
-import Categoria from '../../../model/Categoria'
-import ListaCategorias from '../../Categoria/listaCategoria/ListaCategoria'
+//import Categoria from '../../../model/Categoria'
+//import ListaCategoria from '../../Categoria/listaCategoria'
 
 interface CardProdutoProps {
   post: Produto;
@@ -15,14 +14,14 @@ function CardProduto({post}: CardProdutoProps) {
     <div className='border-slate-900 border flex flex-col rounded overflow-hidden justify-between'>
     <div>
       <div className="flex w-full bg-indigo-400 py-2 px-4 items-center gap-4">
-        <h3 className='text-lg font-bold text-center uppercase '>{post.Usuario?.nome}</h3>
+        <h3 className='text-lg font-bold text-center uppercase '>{post.usuario?.nome}</h3>
       </div>
       <div className='p-4 '>
         <h4 className='text-lg font-semibold uppercase'>{post.nome}</h4>
-        <p>Foto: {post.Foto}</p>
+        <p>Foto: {post.foto}</p>
         <p>Descrição: {post.descricao}</p>
         <p>Material: {post.material}</p>
-        <p>Categoria: {post.Categoria?.tipo}</p>
+        <p>Categoria: {post.categoria?.tipo}</p>
         <p>Preco: {post.preco}</p>
         </div>
       </div>

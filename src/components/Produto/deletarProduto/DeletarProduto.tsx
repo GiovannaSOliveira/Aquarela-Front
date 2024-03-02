@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from '../../../contexts/AuthContext'
 import Produto from '../../../model/Produto'
@@ -17,7 +17,7 @@ function DeletarProduto() {
 
   async function buscarPorId(id: string) {
     try {
-      await buscar(`/produto/${id}`, setProduto, {
+      await buscar(`/produtos/${id}`, setProduto, {
         headers: {
           'Authorization': token
         }
@@ -44,12 +44,12 @@ function DeletarProduto() {
   }, [id])
 
   function retornar() {
-    navigate("/produto")
+    navigate("/produtos")
   }
 
   async function deletarProduto() {
     try {
-      await deletar(`/produto/${id}`, {
+      await deletar(`/produtos/${id}`, {
         headers: {
           'Authorization': token
         }

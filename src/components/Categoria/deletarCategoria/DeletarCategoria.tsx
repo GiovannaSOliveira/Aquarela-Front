@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { AuthContext } from '../../../contexts/AuthContext'
 import Categoria from '../../../model/Categoria'
@@ -17,7 +17,7 @@ function DeletarCategoria() {
 
     async function buscarPorId(id: string) {
         try {
-            await buscar(`/categorias/${id}`, setCategoria, {
+            await buscar('/categorias/${id}', setCategoria, {
                 headers: {
                     'Authorization': token
                 }
@@ -29,12 +29,10 @@ function DeletarCategoria() {
             }
         }
     }
-
-
-    
-    async function buscarPortipo(tipos: string) {
+ 
+    async function buscarPorTipo(Tipo: string) {
         try {
-            await tipo(`/categorias/${tipos}`, setCategoria, {
+            await tipo('/categorias/${tipo}', setCategoria, {
                 headers: {
                     'Authorization': token
                 }
@@ -67,7 +65,7 @@ function DeletarCategoria() {
 
     async function deletarCategoria() {
         try {
-            await deletar(`/categoria/${id}`, {
+            await deletar('/categorias/${id}', {
                 headers: {
                     'Authorization': token
                 }

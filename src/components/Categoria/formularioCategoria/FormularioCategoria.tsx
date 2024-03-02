@@ -1,9 +1,10 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Categoria from '../../../model/Categoria';
 import { atualizar, buscar, cadastrar, tipo } from '../../../services/Service';
 import { toastAlerta } from '../../../util/toastAlerta';
+//import CardCategorias from '../cardCategoria/CardCategoria';
 
 function FormularioCategoria() {
   const [categoria, setCategoria] = useState<Categoria>({} as Categoria);
@@ -23,14 +24,6 @@ function FormularioCategoria() {
     });
   }
 
-  async function buscarPortipo(tipos: string) {
-    await tipo(`/categorias/${tipo}`, setCategoria, {
-      headers: {
-        Authorization: token,
-      },
-    });
-  }
-
   useEffect(() => {
     if (id !== undefined) {
       buscarPorId(id)
@@ -44,6 +37,7 @@ function FormularioCategoria() {
     })
 
     console.log(JSON.stringify(categoria))
+    
   }
 
   async function gerarNovaCategoria(e: ChangeEvent<HTMLFormElement>) {
@@ -51,7 +45,7 @@ function FormularioCategoria() {
 
     if (id !== undefined) {
       try {
-        await atualizar(`/categorias`, categoria, setCategoria, {
+        await atualizar('/categorias/atualizar', categoria, setCategoria, {
           headers: {
             'Authorization': token
           }
@@ -72,17 +66,17 @@ function FormularioCategoria() {
 
     } else {
       try {
-        await cadastrar(`/categorias`, categoria, setCategoria, {
+        await cadastrar('/categorias/cadastrar', categoria, setCategoria, {
           headers: {
             'Authorization': token
           }
         })
 
-        toastAlerta('Categoria cadastrada com sucesso', 'sucesso')
+        alert('Categoria cadastrada com sucesso')
 
       } catch (error: any) {
         if (error.toString().includes('403')) {
-          toastAlerta('O token expirou, favor logar novamente', 'info')
+          alert('O token expirou, favor logar novamente')
           handleLogout()
         } else {
           toastAlerta('Erro ao cadastrado a Categoria', 'erro')
@@ -94,7 +88,7 @@ function FormularioCategoria() {
   }
 
   function retornar() {
-    navigate("/categorias")
+    navigate("/categorias/cadastrar")
   }
 
   useEffect(() => {
@@ -103,6 +97,9 @@ function FormularioCategoria() {
       navigate('/login');
     }
   }, [token]);
+
+ 
+
 
   return (
     <div className="container flex flex-col items-center justify-center mx-auto">
@@ -116,25 +113,25 @@ function FormularioCategoria() {
           <input
             type="text"
             placeholder="Descrição"
-            name='descricao'
+            name='descricaocat'
             className="border-2 border-slate-700 rounded p-2"
             value={categoria.descricaocat}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
           />
+
   <label htmlFor="tipo">Tipo de Categoria</label>
           <input
             type="text"
             placeholder="Tipo"
             className="border-2 border-slate-700 rounded p-2"
+            name='tipo'
             value={categoria.tipo}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
           />
-
         </div>
         <button
           className="rounded text-slate-100 bg-indigo-400 hover:bg-indigo-800 w-1/2 py-2 mx-auto block"
-          type="submit"
-        >
+          type="submit" >
           {id === undefined ? 'Cadastrar' : 'Editar'}
         </button>
       </form>

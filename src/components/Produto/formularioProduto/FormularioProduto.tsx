@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Produto from '../../../model/Produto';
@@ -19,25 +19,23 @@ function FormularioProduto() {
 
   const [categoria, setCategoria] = useState<Categoria>({
     id: 0,
-    tipo:'',
+    tipo: '',
     descricaocat: '',
   });
 
   const [produto, setProduto] = useState<Produto>({
-    
     id: 0,
-    Categoria: null,
-    Usuario: null,
-    nome: '',
-    descricao: '',
-    preco: '',
-    material: '',
-    Foto:'',
-  })
+  nome: "",
+  descricao: "",
+  preco: "",
+  material: "",
+  foto: "",
+  categoria: null,
+  usuario: null,
+  });
 
-
-    async function buscarProdutoPorId(id: string) {
-    await buscar(`/produto/${id}`, setProduto, {
+  async function buscarProdutoPorId(id: string) {
+    await buscar(`/produtos/${id}`, setProduto, {
       headers: {
         Authorization: token,
       },
@@ -45,15 +43,15 @@ function FormularioProduto() {
   }
 
   async function buscarCategoriaPorId(id: string) {
-    await buscar(`/categoria/${id}`, setCategorias, {
+    await buscar(`/categorias/${id}`, setCategoria, {
       headers: {
         Authorization: token,
       },
     });
   }
 
-  async function buscarCategoria() {
-    await buscar('/categoria', setCategoria, {
+  async function buscarCategorias() {
+    await buscar('/categorias', setCategorias, {
       headers: {
         Authorization: token,
       },
@@ -68,7 +66,7 @@ function FormularioProduto() {
   }, [token]);
 
   useEffect(() => {
-    buscarCategoria();
+    buscarCategorias();
     if (id !== undefined) {
       buscarProdutoPorId(id);
       console.log(categoria);
@@ -79,7 +77,7 @@ function FormularioProduto() {
   useEffect(() => {
     setProduto({
       ...produto,
-      Categoria: categoria,
+      categoria: categoria,
     });
   }, [categoria]);
 
@@ -87,13 +85,13 @@ function FormularioProduto() {
     setProduto({
       ...produto,
       [e.target.name]: e.target.value,
-      Categoria: categoria,
-      Usuario: usuario,
+      categoria: categoria,
+      usuario: usuario,
     });
   }
 
   function retornar() {
-    navigate('/produto');
+    navigate('/produtos');
   }
 
   async function gerarNovoProduto(e: ChangeEvent<HTMLFormElement>) {
@@ -103,24 +101,24 @@ function FormularioProduto() {
 
     if (id != undefined) {
       try {
-        await atualizar(`/produto`, produto, setProduto, {
+        await atualizar(`/produtos/atualizar`, produto, setProduto, {
           headers: {
             Authorization: token,
           },
         });
-        toastAlerta('Produto atualizado com sucesso', 'sucesso');
+        toastAlerta('Produto atualizada com sucesso', 'sucesso');
         retornar();
       } catch (error: any) {
         if (error.toString().includes('403')) {
           toastAlerta('O token expirou, favor logar novamente', 'info')
           handleLogout()
         } else {
-          toastAlerta('Erro ao atualizar o Produto', 'erro');
+          toastAlerta('Erro ao atualizar a Produto', 'erro');
         }
       }
     } else {
       try {
-        await cadastrar(`/produto`, produto, setProduto, {
+        await cadastrar(`/produtos/cadastrar`, produto, setProduto, {
           headers: {
             Authorization: token,
           },
@@ -133,7 +131,7 @@ function FormularioProduto() {
           toastAlerta('O token expirou, favor logar novamente', 'info')
           handleLogout()
         } else {
-          toastAlerta('Erro ao cadastrar a Produto', 'erro');
+          toastAlerta('Erro ao cadastrar o Produto', 'erro');
         }
       }
     }
@@ -146,80 +144,80 @@ function FormularioProduto() {
       <h1 className="text-4xl text-center my-8">{id !== undefined ? 'Editar Produto' : 'Cadastrar Produto'}</h1>
 
       <form onSubmit={gerarNovoProduto} className="flex flex-col w-1/2 gap-4">
+
         <div className="flex flex-col gap-2">
-          <label htmlFor="titulo">Nome do Produto</label>
+          <label htmlFor="nome">Nome do produto</label>
           <input
             value={produto.nome}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
             type="text"
-            placeholder="Titulo"
-            name="titulo"
+            placeholder="Nome"
+            name="nome"
             required
             className="border-2 border-slate-700 rounded p-2"
           />
         </div>
 
+
         <div className="flex flex-col gap-2">
-          <label htmlFor="titulo">Descricao do Produto</label>
+          <label htmlFor="descricao">Descrição produto</label>
           <input
             value={produto.descricao}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
             type="text"
-            placeholder="Texto"
-            name="texto"
-            required
+            placeholder="Descrição"
+            name="descricao"
             className="border-2 border-slate-700 rounded p-2"
           />
         </div>
 
+
         <div className="flex flex-col gap-2">
-          <label htmlFor="titulo">Preco do Produto</label>
+          <label htmlFor="preco">Preco do Produto</label>
           <input
             value={produto.preco}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
-            type="number"
+            type="text"
             placeholder="Preço"
-            name="texto"
+            name="preco"
             required
             className="border-2 border-slate-700 rounded p-2"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="titulo"> Foto do Material</label>
+          <label htmlFor="material">Material</label>
           <input
             value={produto.material}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
-            type="ntext"
+            type="text"
             placeholder="Material"
-            name="texto"
-            required
+            name="material"
             className="border-2 border-slate-700 rounded p-2"
           />
         </div>
 
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="titulo"> Foto do Produto</label>
+          <label htmlFor="foto">Foto do Produto</label>
           <input
-            value={produto.Foto}
+            value={produto.foto}
             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
             type="text"
             placeholder="Foto"
-            name="texto"
-            required
+            name="foto"
             className="border-2 border-slate-700 rounded p-2"
           />
         </div>
 
 
         <div className="flex flex-col gap-2">
-          <p>Categoria do Produto</p>
+          <p>Categoria da produto</p>
           <select name="categoria" id="categoria" className='border p-2 border-slate-800 rounded' onChange={(e) => buscarCategoriaPorId(e.currentTarget.value)}>
-            <option value="" selected disabled>Selecione uam Categoria</option>
+            <option value={0} selected disabled>Selecione um categoria</option>
             {categorias.map((categoria) => (
               <>
-                <option value={categoria.id} >{categoria.descricaocat}</option>
+                <option value={categoria.id} >{categoria.tipo}</option>
               </>
             ))}
           </select>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import ModalProduto from '../../components/produto/modalProduto/ModalProduto';
 import im1 from '../../assets/Images/prato.jpg';
 import img2 from '../../assets/Images/costura.jpg'
 import img3 from '../../assets/Images/carimbo.jpg'
@@ -54,6 +54,10 @@ function Home() {
         </div>
       </div>
 
+      <div className="flex justify-around gap-4 pyy">
+              <ModalProduto />
+              <button className='rounded bg-white text-blue-800 py-2 px-4'>Ver postagens</button>
+            </div>
     
     </>
   ); 
